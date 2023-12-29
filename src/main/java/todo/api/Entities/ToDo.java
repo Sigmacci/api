@@ -2,16 +2,16 @@ package todo.api.Entities;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
@@ -36,8 +36,11 @@ public class ToDo {
     @Column(name = "duedate")
     private Date _dueDate;
 
-    // @ManyToMany(fetch = FetchType.LAZY, mappedBy = "_toDos")
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    // @ManyToMany(mappedBy = "_toDos")
+    // @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
+    // CascadeType.MERGE })
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "users_todos", joinColumns = @JoinColumn(name = "todo_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<AppUser> _users = new HashSet<>();
 
     public ToDo() {

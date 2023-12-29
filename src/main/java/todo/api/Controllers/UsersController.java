@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -35,7 +34,7 @@ public class UsersController {
         ArrayList<UserDTO> userDTOs = new ArrayList<>();
         users.forEach(u -> {
             var temp = modelMapper.map(u, UserDTO.class);
-            temp.setToDos(u.getToDos().stream().map(ToDo::getId).toList());
+            temp.setToDoIds(u.getToDos().stream().map(ToDo::getId).toList());
             userDTOs.add(temp);
         });
         return new ResponseEntity<>(userDTOs, HttpStatus.OK);
@@ -50,7 +49,7 @@ public class UsersController {
     public ResponseEntity<UserDTO> getUser(@PathVariable Integer id) {
         var user = _repository.findById(id).get();
         var userDTO = modelMapper.map(user, UserDTO.class);
-        userDTO.setToDos(user.getToDos().stream().map(ToDo::getId).toList());
+        userDTO.setToDoIds(user.getToDos().stream().map(ToDo::getId).toList());
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 

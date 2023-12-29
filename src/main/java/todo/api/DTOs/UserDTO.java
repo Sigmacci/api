@@ -7,7 +7,7 @@ public class UserDTO {
     private Integer id;
     private String username;
     private List<Integer> toDoIds;
-    
+
     public UserDTO(Integer id, String username, List<Integer> toDoIds) {
         this.id = id;
         this.username = username;
@@ -30,11 +30,11 @@ public class UserDTO {
         this.username = username;
     }
 
-    public List<Integer> getToDos() {
+    public List<Integer> getToDoIds() {
         return toDoIds;
     }
 
-    public void setToDos(List<Integer> toDoIds) {
+    public void setToDoIds(List<Integer> toDoIds) {
         this.toDoIds = toDoIds;
     }
 

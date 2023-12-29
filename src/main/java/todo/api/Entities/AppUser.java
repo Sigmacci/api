@@ -8,12 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
@@ -30,9 +27,7 @@ public class AppUser {
     @Column(name = "username")
     private String _username;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(name = "users_todos", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "todo_id") })
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "_users")
     private Set<ToDo> _toDos = new HashSet<>();
 
     public AppUser() {
