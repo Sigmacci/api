@@ -28,8 +28,10 @@ import todo.api.Helpers.UserInfoResponse;
 import todo.api.JWT.JwtUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired

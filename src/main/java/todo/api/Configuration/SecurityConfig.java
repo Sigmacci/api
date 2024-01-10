@@ -52,7 +52,11 @@ public class SecurityConfig {
                         .requestMatchers("/h2-console/**", "/login", "/register").permitAll()
                         .requestMatchers("/users/**").authenticated()
                         .anyRequest()
-                        .permitAll());
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies());
 
         http.authenticationProvider(authenticationProvider());
 
