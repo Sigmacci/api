@@ -12,9 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.transaction.Transactional;
-import todo.api.DTOs.ToDoCreateDTO;
-import todo.api.DTOs.ToDoDTO;
-import todo.api.DTOs.UserDTO;
+import todo.api.DTOs.ToDoCreateDto;
+import todo.api.DTOs.ToDoDto;
+import todo.api.DTOs.UserDto;
 import todo.api.Data.ToDoRepository;
 import todo.api.Data.UserRepository;
 import todo.api.Entities.AppUser;
@@ -45,11 +45,11 @@ public class ToDoController {
     }
 
     @GetMapping("/todos")
-    public ResponseEntity<List<ToDoDTO>> getToDos() {
+    public ResponseEntity<List<ToDoDto>> getToDos() {
         var toDos = toDoRepository.findAll();
-        ArrayList<ToDoDTO> toDoDTOs = new ArrayList<>();
+        ArrayList<ToDoDto> toDoDTOs = new ArrayList<>();
         toDos.forEach(t -> {
-            var temp = modelMapper.map(t, ToDoDTO.class);
+            var temp = modelMapper.map(t, ToDoDto.class);
             temp.setUsersId(t.getUsers().stream().map(AppUser::getId).toList());
             toDoDTOs.add(temp);
         });
@@ -57,11 +57,11 @@ public class ToDoController {
     }
 
     @GetMapping("/users/{userId}/todos")
-    public ResponseEntity<List<ToDoDTO>> getToDosByUserId(@PathVariable(value = "userId") Integer userId) {
+    public ResponseEntity<List<ToDoDto>> getToDosByUserId(@PathVariable(value = "userId") Integer userId) {
         var user = userRepository.findById(userId).orElse(null);
-        ArrayList<ToDoDTO> toDoDtos = new ArrayList<>();
+        ArrayList<ToDoDto> toDoDtos = new ArrayList<>();
         user.getToDos().forEach(t -> {
-            var temp = modelMapper.map(t, ToDoDTO.class);
+            var temp = modelMapper.map(t, ToDoDto.class);
             temp.setUsersId(t.getUsers().stream().map(AppUser::getId).toList());
             toDoDtos.add(temp);
         });
@@ -69,26 +69,26 @@ public class ToDoController {
     }
 
     @GetMapping("/users/{userId}/todos/{toDoId}")
-    public ResponseEntity<ToDoDTO> getToDoByUserId(@PathVariable(value = "userId") Integer userId,
+    public ResponseEntity<ToDoDto> getToDoByUserId(@PathVariable(value = "userId") Integer userId,
             @PathVariable(value = "toDoId") Integer toDoId) {
 
         var user = userRepository.findById(userId).orElse(null);
         var toDo = user.getToDos().stream().filter(t -> t.getId() == toDoId).findFirst().orElse(null);
-        var toDoDTO = modelMapper.map(toDo, ToDoDTO.class);
+        var toDoDTO = modelMapper.map(toDo, ToDoDto.class);
         toDoDTO.setUsersId(toDo.getUsers().stream().map(AppUser::getId).toList());
         return new ResponseEntity<>(toDoDTO, HttpStatus.OK);
     }
 
     @GetMapping("/todos/{id}/users")
-    public ResponseEntity<List<UserDTO>> getUsersByToDoId(@PathVariable(value = "id") Integer id) {
+    public ResponseEntity<List<UserDto>> getUsersByToDoId(@PathVariable(value = "id") Integer id) {
         var toDo = toDoRepository.findById(id).orElse(null);
         if (toDo == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         var users = toDo.getUsers();
-        ArrayList<UserDTO> userDTOs = new ArrayList<>();
+        ArrayList<UserDto> userDTOs = new ArrayList<>();
         users.forEach(u -> {
-            var temp = modelMapper.map(u, UserDTO.class);
+            var temp = modelMapper.map(u, UserDto.class);
             temp.setToDoIds(u.getToDos().stream().map(ToDo::getId).toList());
             userDTOs.add(temp);
         });
@@ -96,8 +96,8 @@ public class ToDoController {
     }
 
     @PostMapping("/users/{userId}/todos")
-    public ResponseEntity<ToDoDTO> createToDo(@PathVariable(value = "userId") Integer userId,
-            @RequestBody ToDoCreateDTO toDoCreateDTO) {
+    public ResponseEntity<ToDoDto> createToDo(@PathVariable(value = "userId") Integer userId,
+            @RequestBody ToDoCreateDto toDoCreateDTO) {
         ToDo toDo = new ToDo();
         toDo = modelMapper.map(toDoCreateDTO, ToDo.class);
         var user = userRepository.findById(userId).orElse(null);
@@ -107,14 +107,14 @@ public class ToDoController {
         userRepository.save(user);
         // _toDoRepository.save(toDo);
 
-        var toDoDTO = modelMapper.map(toDo, ToDoDTO.class);
+        var toDoDTO = modelMapper.map(toDo, ToDoDto.class);
         toDoDTO.setUsersId(toDo.getUsers().stream().map(AppUser::getId).toList());
         return new ResponseEntity<>(toDoDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("users/{userId}/todos/{toDoId}")
-    public ResponseEntity<ToDoDTO> editToDo(@PathVariable(value = "userId") Integer userId,
-            @PathVariable(value = "toDoId") Integer toDoId, @RequestBody ToDoDTO toDoDTO) {
+    public ResponseEntity<ToDoDto> editToDo(@PathVariable(value = "userId") Integer userId,
+            @PathVariable(value = "toDoId") Integer toDoId, @RequestBody ToDoDto toDoDTO) {
         var toDo = toDoRepository.findById(toDoId).orElse(null);
         if (toDo == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,54 +23,73 @@ public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer _id;
+    private Integer id;
 
-    @Column(name = "username")
-    private String _username;
+    @Column(name = "username", unique = true, nullable = false)
+    private String username;
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "_users")
-    private Set<ToDo> _toDos = new HashSet<>();
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "users")
+    private Set<ToDo> toDos = new HashSet<>();
+
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+    private Set<Role> roles = new HashSet<>();
 
     public AppUser() {
     }
 
-    public AppUser(String username) {
-        _username = username;
-    }
-
     public Integer getId() {
-        return _id;
+        return id;
     }
 
     public void setId(Integer id) {
-        _id = id;
+        this.id = id;
     }
 
     public String getUsername() {
-        return _username;
+        return username;
     }
 
     public void setUsername(String username) {
-        _username = username;
+        this.username = username;
     }
 
     public Set<ToDo> getToDos() {
-        return _toDos;
+        return toDos;
     }
 
     public void setToDos(Set<ToDo> toDos) {
-        _toDos = toDos;
+        this.toDos = toDos;
     }
 
     public void addToDo(ToDo toDo) {
-        _toDos.add(toDo);
+        toDos.add(toDo);
     }
 
-    @Override
-    public String toString() {
-        return "AppUser [id=" + _id + ", username=" + _username + ", toDos=" + _toDos.stream().map(ToDo::getId).toList()
-                + "]";
+    public String getPassword() {
+        return password;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+
+    // @Override
+    // public String toString() {
+    //     return "AppUser [id=" + _id + ", username=" + _username + ", toDos=" + _toDos.stream().map(ToDo::getId).toList()
+    //             + "]";
+    // }
 
     // @Override
     // public int hashCode() {

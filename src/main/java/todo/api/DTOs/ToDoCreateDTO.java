@@ -2,13 +2,13 @@ package todo.api.DTOs;
 
 import java.util.Date;
 
-public class ToDoCreateDTO {
+public class ToDoCreateDto {
     
     private String title;
     private String description;
     private Date dueDate;
     
-    public ToDoCreateDTO(String title, String description, Date dueDate) {
+    public ToDoCreateDto(String title, String description, Date dueDate) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;

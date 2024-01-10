@@ -2,13 +2,16 @@ package todo.api.DTOs;
 
 import java.util.List;
 
-public class UserDTO {
+public class UserDto {
     
     private Integer id;
     private String username;
     private List<Integer> toDoIds;
 
-    public UserDTO(Integer id, String username, List<Integer> toDoIds) {
+    public UserDto() {
+    }
+
+    public UserDto(Integer id, String username, List<Integer> toDoIds) {
         this.id = id;
         this.username = username;
         this.toDoIds = toDoIds;

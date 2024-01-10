@@ -2,9 +2,10 @@ package todo.api.Controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import todo.api.DTOs.UserDTO;
+import todo.api.DTOs.UserDto;
 import todo.api.Data.UserRepository;
 import todo.api.Entities.ToDo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -29,11 +31,12 @@ public class UsersController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserDTO>> getUsers() {
+    public ResponseEntity<List<UserDto>> getUsers() {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         var users = _repository.findAll();
-        ArrayList<UserDTO> userDTOs = new ArrayList<>();
+        ArrayList<UserDto> userDTOs = new ArrayList<>();
         users.forEach(u -> {
-            var temp = modelMapper.map(u, UserDTO.class);
+            var temp = modelMapper.map(u, UserDto.class);
             temp.setToDoIds(u.getToDos().stream().map(ToDo::getId).toList());
             userDTOs.add(temp);
         });
@@ -46,9 +49,9 @@ public class UsersController {
     // }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable Integer id) {
+    public ResponseEntity<UserDto> getUser(@PathVariable Integer id) {
         var user = _repository.findById(id).get();
-        var userDTO = modelMapper.map(user, UserDTO.class);
+        var userDTO = modelMapper.map(user, UserDto.class);
         userDTO.setToDoIds(user.getToDos().stream().map(ToDo::getId).toList());
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }

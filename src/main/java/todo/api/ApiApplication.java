@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import todo.api.Data.RoleRepository;
 import todo.api.Data.ToDoRepository;
 import todo.api.Data.UserRepository;
 import todo.api.Entities.AppUser;
+import todo.api.Entities.Role;
 import todo.api.Entities.ToDo;
 
 @SpringBootApplication
@@ -21,17 +24,34 @@ public class ApiApplication implements CommandLineRunner {
 	@Autowired
 	private ToDoRepository toDoRepository;
 
+	@Autowired
+	private RoleRepository roleRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	public static void main(String[] args) {
 		SpringApplication.run(ApiApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
+		Role role = new Role();
+		role.setName("ADMIN");
+		roleRepository.save(role);
+
+		Role role2 = new Role();
+		role2.setName("USER");
+
 		AppUser user = new AppUser();
 		user.setUsername("Igor");
+		user.setPassword(passwordEncoder.encode("hello1"));
+		user.getRoles().add(role2);
 
 		AppUser user2 = new AppUser();
 		user2.setUsername("Bogdan");
+		user2.setPassword(passwordEncoder.encode("hello2"));
+		user2.getRoles().add(role2);
 
 		ToDo toDo = new ToDo();
 		toDo.setTitle("a");

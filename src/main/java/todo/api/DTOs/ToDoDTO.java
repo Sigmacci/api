@@ -3,7 +3,7 @@ package todo.api.DTOs;
 import java.util.Date;
 import java.util.List;
 
-public class ToDoDTO {
+public class ToDoDto {
     
     private Integer id;
     private String title;
@@ -12,9 +12,9 @@ public class ToDoDTO {
     private Date dueDate;
     private List<Integer> usersId;
 
-    public ToDoDTO() {}
+    public ToDoDto() {}
 
-    public ToDoDTO(Integer id, String title, String description, Boolean finished, Date dueDate, List<Integer> usersId) {
+    public ToDoDto(Integer id, String title, String description, Boolean finished, Date dueDate, List<Integer> usersId) {
         this.id = id;
         this.title = title;
         this.description = description;
