@@ -49,14 +49,15 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/h2-console/**", "/login", "/register").permitAll()
+                        .requestMatchers("/h2-console/**", "/auth/login", "/auth/register").permitAll()
                         .requestMatchers("/users/**").authenticated()
                         .anyRequest()
-                        .permitAll())
+                        .authenticated())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .invalidateHttpSession(true)
-                        .deleteCookies());
+                        .deleteCookies())
+                .headers(h -> h.frameOptions(o -> o.disable()));
 
         http.authenticationProvider(authenticationProvider());
 

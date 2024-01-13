@@ -46,11 +46,13 @@ public class ApiApplication implements CommandLineRunner {
 		AppUser user = new AppUser();
 		user.setUsername("Igor");
 		user.setPassword(passwordEncoder.encode("hello1"));
+		user.setEmail("example1@gmail.com");
 		user.getRoles().add(role2);
 
 		AppUser user2 = new AppUser();
 		user2.setUsername("Bogdan");
 		user2.setPassword(passwordEncoder.encode("hello2"));
+		user2.setEmail("example2@gmail.com");
 		user2.getRoles().add(role2);
 
 		ToDo toDo = new ToDo();

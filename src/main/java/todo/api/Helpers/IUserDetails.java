@@ -20,14 +20,17 @@ public class IUserDetails implements UserDetails {
 
     private String username;
 
+    private String email;
+
     @JsonIgnore
     private String password;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public IUserDetails(Integer id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public IUserDetails(Integer id, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
+        this.email = email;
         this.password = password;
         this.authorities = authorities;
     }
@@ -40,6 +43,7 @@ public class IUserDetails implements UserDetails {
         return new IUserDetails(
                 user.getId(),
                 user.getUsername(),
+                user.getEmail(),
                 user.getPassword(),
                 authorities);
     }
@@ -61,6 +65,10 @@ public class IUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     @Override

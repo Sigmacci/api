@@ -6,14 +6,16 @@ public class UserDto {
     
     private Integer id;
     private String username;
+    private String email;
     private List<Integer> toDoIds;
 
     public UserDto() {
     }
 
-    public UserDto(Integer id, String username, List<Integer> toDoIds) {
+    public UserDto(Integer id, String username, String email, List<Integer> toDoIds) {
         this.id = id;
         this.username = username;
+        this.email = email;
         this.toDoIds = toDoIds;
     }
 
@@ -31,6 +33,14 @@ public class UserDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<Integer> getToDoIds() {

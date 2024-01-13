@@ -52,9 +52,9 @@ public class AuthController {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
 
-        // if (!authentication.isAuthenticated()) {
-        //     return new ResponseEntity<>("User login failed", HttpStatus.BAD_REQUEST);
-        // }
+        if (!authentication.isAuthenticated()) {
+            return new ResponseEntity<>("User login failed", HttpStatus.BAD_REQUEST);
+        }
         SecurityContextHolder.getContext().setAuthentication(authentication);
  
         IUserDetails userDetails = (IUserDetails) authentication.getPrincipal();
@@ -83,6 +83,7 @@ public class AuthController {
 
         AppUser user = new AppUser();
         user.setUsername(registerDto.getUsername());
+        user.setEmail(registerDto.getEmail());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 
         userRepository.save(user);
