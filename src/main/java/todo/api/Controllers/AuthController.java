@@ -58,7 +58,15 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
  
         IUserDetails userDetails = (IUserDetails) authentication.getPrincipal();
+
+        // ResponseCookieBuilder cookieBuilder = ResponseCookie.from("jwt", jwtUtils.generateJwtToken(userDetails))
+        //     .httpOnly(true)
+        //     .secure(true)
+        //     .sameSite("None"); // Add SameSite=None flag
+
+        // ResponseCookie cookie = cookieBuilder.build();
         ResponseCookie cookie = jwtUtils.generateJwtCookie(userDetails);
+        
 
         List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
                 .collect(Collectors.toList());

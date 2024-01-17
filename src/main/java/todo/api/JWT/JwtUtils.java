@@ -50,7 +50,7 @@ public class JwtUtils {
     public ResponseCookie generateJwtCookie(IUserDetails userDetails)
         throws InvalidKeyException, NoSuchAlgorithmException {
         String jwt = generateTokenFromUsername(userDetails.getUsername());
-        ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true)
+        ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true).sameSite("None").secure(true)
           .build();
         return cookie;
     }
